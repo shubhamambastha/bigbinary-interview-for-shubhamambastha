@@ -16,6 +16,9 @@ module.exports = {
       borderColor: {
         primary: "#E4E4E7",
       },
+      maxWidth: {
+        240: "60rem",
+      },
     },
     plugins: [],
   },
