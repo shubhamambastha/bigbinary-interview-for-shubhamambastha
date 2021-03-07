@@ -11,7 +11,7 @@ const Table = ({ headers, rowContent, loading, className, ...rest }) => {
               {/** Table headers */}
               <tr className="h-10">
                 {headers.map((title, index) => (
-                  <th className="text-center" key={index}>
+                  <th className="text-left font-medium px-6 noWrap" key={index}>
                     {title}
                   </th>
                 ))}
@@ -31,7 +31,10 @@ const Table = ({ headers, rowContent, loading, className, ...rest }) => {
                     key={idx}
                   >
                     {rowData.map((columnData, cidx) => (
-                      <td className="font-normal" key={cidx}>
+                      <td
+                        className="text-left font-normal px-6 noWrap"
+                        key={cidx}
+                      >
                         {columnData}
                       </td>
                     ))}
