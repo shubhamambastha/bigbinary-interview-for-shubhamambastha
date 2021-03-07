@@ -19,6 +19,9 @@ module.exports = {
       maxWidth: {
         240: "60rem",
       },
+      spacing: {
+        13: "3.25rem",
+      },
     },
     plugins: [],
   },

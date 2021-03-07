@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const Table = ({ headers, rowContent, loading, className, ...rest }) => {
   return (
-    <section className="w-full max-w-240 mx-auto overflow-hidden" {...rest}>
+    <section className="w-full mx-auto overflow-hidden" {...rest}>
       <div className={`w-full m-auto bg-white ${className}`}>
         <div className="rounded-md border border-primary overflow-hidden">
           <table className="w-full">
@@ -20,16 +20,20 @@ const Table = ({ headers, rowContent, loading, className, ...rest }) => {
             <tbody className="text-center text-sm text-primary">
               {/** Loading state for now */}
               {loading ? (
-                <div>Null</div>
+                <tr>
+                  <td>No</td>
+                </tr>
               ) : (
                 /**Table Rows */
                 rowContent.map((rowData, idx) => (
                   <tr
-                    className="h-12 text-xs hover:bg-gray-100 bg-white transform duration-300"
+                    className="h-13 text-xs hover:bg-gray-100 bg-white transform duration-300"
                     key={idx}
                   >
                     {rowData.map((columnData, cidx) => (
-                      <td key={cidx}>{columnData}</td>
+                      <td className="font-normal" key={cidx}>
+                        {columnData}
+                      </td>
                     ))}
                   </tr>
                 ))
