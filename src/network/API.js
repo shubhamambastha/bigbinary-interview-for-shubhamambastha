@@ -15,13 +15,13 @@ function makeReq(method, url, data, config) {
   const onError = (error) => {
     const { response } = error;
     if (response) {
-      const { data } = response;
-      if (data.status === "500") {
+      const { data, status } = response;
+      if (status === "500") {
         promiseResponse.error = {
           message: "Unable to connect with server. Try again after sometime",
         };
       } else {
-        promiseResponse.error = { message: data.message };
+        promiseResponse.error = { message: data };
       }
       return Promise.resolve(promiseResponse);
     } else {
