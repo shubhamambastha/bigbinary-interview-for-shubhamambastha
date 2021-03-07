@@ -26,8 +26,8 @@ const Table = ({ headers, rowContent, loading, className, ...rest }) => {
                     <SectionLoader />
                   </td>
                 </tr>
-              ) : (
-                /**Table Rows */
+              ) : /**Table Rows */
+              rowContent.length ? (
                 rowContent.map((rowData, idx) => (
                   <tr
                     className="h-13 text-xs hover:bg-gray-100 bg-white transform duration-300"
@@ -43,6 +43,16 @@ const Table = ({ headers, rowContent, loading, className, ...rest }) => {
                     ))}
                   </tr>
                 ))
+              ) : (
+                /**Table Empty State */
+                <tr style={{ height: 624 }}>
+                  <td
+                    colspan={12}
+                    className="text-sm w-full font-medium align-top pt-12"
+                  >
+                    No results found for the specified filter
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
