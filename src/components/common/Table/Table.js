@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import SectionLoader from "../SectionLoader";
 
 const Table = ({ headers, rowContent, loading, className, ...rest }) => {
   return (
@@ -20,8 +21,10 @@ const Table = ({ headers, rowContent, loading, className, ...rest }) => {
             <tbody className="text-center text-sm text-primary">
               {/** Loading state for now */}
               {loading ? (
-                <tr>
-                  <td>No</td>
+                <tr style={{ height: 624 }}>
+                  <td colspan={12} className="w-full">
+                    <SectionLoader />
+                  </td>
                 </tr>
               ) : (
                 /**Table Rows */
