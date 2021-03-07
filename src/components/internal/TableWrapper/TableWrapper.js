@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import queryString from "query-string";
 import { useRouter } from "next/router";
+import _ from "lodash";
 import { API } from "../../../network/API";
 import Table from "../../common/Table";
 import Pagination from "../../common/Pagination";
+import StatusTag from "../../common/StatusTag";
 
 const TableWrapper = ({}) => {
   const [launchData, setLaunchData] = useState([]);
@@ -104,6 +106,13 @@ const TableWrapper = ({}) => {
     getLaunches({ query, page });
   }, [router.query]);
 
+  const getDisplayValue = (value) =>
+    _.isEmpty(value) ? (
+      <span className="bg-secondary text-secondary p-2 rounded-md">NA</span>
+    ) : (
+      value
+    );
+
   return (
     <div className="text-2xl font-bold mt-12 max-w-240 mx-auto">
       <Pagination
@@ -128,22 +137,30 @@ const TableWrapper = ({}) => {
             "Location",
             "Mission",
             "Orbit",
-            "Launch Status",
+            <p className="text-center">Launch Status</p>,
             "Rocket",
           ]}
           rowContent={launchData.map((data, idx) => [
             <p>{(idx + 1).toString().padStart(2, "0")}</p>,
             <p>{format(new Date(data?.date_utc), "dd MMM yyyy HH:mm")}</p>,
-            <p>{data?.launchpad?.name}</p>,
+            <p>{getDisplayValue(data?.launchpad?.name)}</p>,
             <p>{data?.name}</p>,
-            <p>{data?.payloads[0]?.orbit}</p>,
-            <p>
+            <p>{getDisplayValue(data?.payloads[0]?.orbit)}</p>,
+            <StatusTag
+              type={
+                data?.upcoming
+                  ? "Upcoming"
+                  : data?.success
+                  ? "Success"
+                  : "Failed"
+              }
+            >
               {data?.upcoming
                 ? "Upcoming"
                 : data?.success
                 ? "Success"
-                : "Fails"}
-            </p>,
+                : "Failed"}
+            </StatusTag>,
             <p>{data?.rocket?.name}</p>,
           ])}
           loading={triggerListing}
