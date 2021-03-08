@@ -7,9 +7,13 @@ import { API } from "../../../network/API";
 import Table from "../../common/Table";
 import Pagination from "../../common/Pagination";
 import StatusTag from "../../common/StatusTag";
+import LaunchDetailModal from "../../common/LaunchDetailModal";
 
 const TableWrapper = ({}) => {
   const [launchData, setLaunchData] = useState([]);
+  const [launchDetailData, setLaunchDetailData] = useState({});
+  const [openLaunchModal, setOpenLaunchModal] = useState(false);
+  const [detailDataLoading, setDetailDataLoading] = useState(false);
   const [urlState, setUrlState] = useState({});
   const [triggerListing, setTriggerListing] = useState(false);
   const [pageInfo, setPageInfo] = useState({
@@ -45,6 +49,49 @@ const TableWrapper = ({}) => {
         currentPage: data?.page,
       });
       setTriggerListing(false);
+    }
+    if (error) {
+      console.log("error", error);
+    }
+  };
+
+  /**
+   * This function will get launch data from id
+   */
+  const getLauncheByFlight = async ({ id }) => {
+    const { data, error } = await API.post(`/`, {
+      query: {
+        _id: id,
+      },
+      options: {
+        select: [
+          "date_utc",
+          "name",
+          "success",
+          "upcoming",
+          "details",
+          "links",
+          "flight_number",
+        ],
+        populate: [
+          {
+            path: "launchpad",
+            select: "name",
+          },
+          {
+            path: "payloads",
+            select: ["orbit", "type"],
+          },
+          {
+            path: "rocket",
+            select: ["name", "country", "company", "engines"],
+          },
+        ],
+      },
+    });
+    if (data) {
+      setLaunchDetailData(data?.docs[0]);
+      setDetailDataLoading(false);
     }
     if (error) {
       console.log("error", error);
@@ -114,7 +161,7 @@ const TableWrapper = ({}) => {
     );
 
   return (
-    <div className="text-2xl font-bold mt-12 max-w-240 mx-auto">
+    <div className="text-2xl font-bold my-12 max-w-240 mx-auto">
       <Pagination
         loading={triggerListing}
         pagination={{
@@ -141,7 +188,16 @@ const TableWrapper = ({}) => {
             "Rocket",
           ]}
           rowContent={launchData.map((data, idx) => [
-            <p>{(idx + 1).toString().padStart(2, "0")}</p>,
+            <p
+              className="cursor-pointer underline"
+              onClick={() => {
+                setDetailDataLoading(true);
+                getLauncheByFlight({ id: data?.id });
+                setOpenLaunchModal(true);
+              }}
+            >
+              {(idx + 1).toString().padStart(2, "0")}
+            </p>,
             <p>{format(new Date(data?.date_utc), "dd MMM yyyy HH:mm")}</p>,
             <p>{getDisplayValue(data?.launchpad?.name)}</p>,
             <p>{data?.name}</p>,
@@ -166,6 +222,49 @@ const TableWrapper = ({}) => {
           loading={triggerListing}
         />
       </Pagination>
+      <LaunchDetailModal
+        open={openLaunchModal}
+        handleClose={() => {
+          setOpenLaunchModal(false);
+          setLaunchDetailData({});
+        }}
+        isLoading={detailDataLoading}
+        imageUrl={launchDetailData?.links?.patch?.small}
+        missionName={launchDetailData?.name}
+        status={
+          launchDetailData?.upcoming
+            ? "Upcoming"
+            : launchDetailData?.success
+            ? "Success"
+            : "Failed"
+        }
+        rocketName={launchDetailData?.rocket?.name}
+        links={{
+          nasa: launchDetailData?.links?.presskit,
+          wikipedia: launchDetailData?.links?.wikipedia,
+          youtube: launchDetailData?.links?.webcast,
+        }}
+        flightNumber={launchDetailData?.flight_number}
+        details={launchDetailData?.details}
+        rocketType={launchDetailData?.rocket?.engines?.type}
+        manufacturer={launchDetailData?.rocket?.company}
+        country={launchDetailData?.rocket?.country}
+        date={
+          launchDetailData?.date_utc &&
+          format(new Date(launchDetailData?.date_utc), "dd MMM yyyy HH:mm")
+        }
+        payloadType={
+          launchDetailData?.payloads && launchDetailData?.payloads.length
+            ? launchDetailData?.payloads[0]?.type
+            : ""
+        }
+        orbit={
+          launchDetailData?.payloads && launchDetailData?.payloads.length
+            ? launchDetailData?.payloads[0]?.orbit
+            : ""
+        }
+        launchSite={launchDetailData?.launchpad?.name}
+      />
     </div>
   );
 };
