@@ -22,7 +22,7 @@ const Table = ({ headers, rowContent, loading, className, ...rest }) => {
               {/** Loading state for now */}
               {loading ? (
                 <tr style={{ height: 624 }}>
-                  <td colspan={12} className="w-full">
+                  <td colSpan={12} className="w-full">
                     <SectionLoader />
                   </td>
                 </tr>
@@ -47,7 +47,7 @@ const Table = ({ headers, rowContent, loading, className, ...rest }) => {
                 /**Table Empty State */
                 <tr style={{ height: 624 }}>
                   <td
-                    colspan={12}
+                    colSpan={12}
                     className="text-sm w-full font-medium align-top pt-12"
                   >
                     No results found for the specified filter
@@ -66,7 +66,7 @@ Table.propTypes = {
   /**
    * Table headers
    */
-  headers: PropTypes.arrayOf(PropTypes.string),
+  headers: PropTypes.arrayOf(PropTypes.node),
   /**
    * Table content as array or arrays
    */
