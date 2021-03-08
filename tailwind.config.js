@@ -23,10 +23,19 @@ module.exports = {
         primary: "#E4E4E7",
       },
       maxWidth: {
+        136: "34rem",
         240: "60rem",
       },
       spacing: {
         13: "3.25rem",
+        18: "4.5rem",
+        41: "10.25rem",
+      },
+      fontSize: {
+        xs: ["0.75rem", "0.75rem"],
+        sm: ["0.875rem", "0.875rem"],
+        base: ["1rem", "1rem"],
+        lg: ["1.125rem", "1.125rem"],
       },
     },
     plugins: [],
