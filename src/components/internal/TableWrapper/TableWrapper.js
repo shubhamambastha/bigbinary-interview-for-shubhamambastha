@@ -7,6 +7,7 @@ import Table from "../../common/Table";
 import Pagination from "../../common/Pagination";
 import StatusTag from "../../common/StatusTag";
 import LaunchDetailWrapper from "../LaunchDetailWrapper";
+import { getDisplayValue } from "../../../_helpers/Functions";
 
 const TableWrapper = ({ urlState, stateUrlUpdate }) => {
   const [launchData, setLaunchData] = useState([]);
@@ -140,13 +141,6 @@ const TableWrapper = ({ urlState, stateUrlUpdate }) => {
     setTriggerListing(true);
     getLaunches({ query, page });
   }, [router.query]);
-
-  const getDisplayValue = (value) =>
-    _.isEmpty(value) ? (
-      <span className="bg-secondary text-secondary p-2 rounded-md">NA</span>
-    ) : (
-      value
-    );
 
   return (
     <div className="text-2xl font-bold my-12">

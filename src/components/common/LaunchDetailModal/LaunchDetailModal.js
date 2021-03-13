@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { CloseIcon } from "../../../_helpers/Icons";
+import { getDisplayValue } from "../../../_helpers/Functions";
 import StatusTag from "../StatusTag";
 
 const LaunchDetailModal = ({
@@ -210,7 +211,7 @@ const LaunchDetailModal = ({
                   isLoading ? "w-16 h-4 bg-gray-200 rounded" : ""
                 }`}
               >
-                {orbit}
+                {getDisplayValue(orbit)}
               </span>
             </div>
             <div className="flex py-4 space-x-5">

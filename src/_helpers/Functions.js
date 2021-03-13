@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { customRanges } from "../components/common/Calendar/CustomRange";
+import _ from "lodash";
 
 export const getDateLabel = (dateStart, dateEnd) => {
   let label = "";
@@ -18,3 +19,10 @@ export const getDateLabel = (dateStart, dateEnd) => {
   }
   return label;
 };
+
+export const getDisplayValue = (value) =>
+  _.isEmpty(value) ? (
+    <span className="bg-secondary text-secondary p-2 rounded-md">NA</span>
+  ) : (
+    value
+  );
