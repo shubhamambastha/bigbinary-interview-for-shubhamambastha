@@ -15,23 +15,25 @@ const TableWrapper = ({ urlState, stateUrlUpdate }) => {
   const [openLaunchModal, setOpenLaunchModal] = useState(false);
   const [detailDataLoading, setDetailDataLoading] = useState(false);
   const [triggerListing, setTriggerListing] = useState(false);
+  const [queryState, setQueryState] = useState({});
+
+  const router = useRouter();
+
   const [pageInfo, setPageInfo] = useState({
     perPageCount: 12,
     totalPage: 1,
-    currentPage: 1,
+    currentPage: router?.query?.page ? Number(router?.query?.page) : 1,
   });
-
-  const router = useRouter();
 
   /**
    * This function will get launch datas according to query
    */
-  const getLaunches = async ({ query, page }) => {
+  const getLaunches = async () => {
     const { data, error } = await API.post(`/`, {
-      query: query,
+      query: queryState,
       options: {
         limit: pageInfo?.perPageCount,
-        page: page,
+        page: pageInfo?.currentPage,
         select: ["date_utc", "name", "success", "upcoming"],
         populate: [
           { path: "launchpad", select: "name" },
@@ -98,11 +100,20 @@ const TableWrapper = ({ urlState, stateUrlUpdate }) => {
   };
 
   /**
+   * Use effect to Get launch data once it get trigger
+   */
+  useEffect(() => {
+    if (triggerListing) {
+      getLaunches();
+      setTriggerListing(false);
+    }
+  }, [triggerListing]);
+
+  /**
    * This use Effect triggers when router param has changed
    */
   useEffect(() => {
     let query = {};
-    let page = router?.query?.page ? Number(router?.query?.page) : 1;
     if (router?.query?.status) {
       switch (router?.query?.status) {
         case "success":
@@ -137,9 +148,8 @@ const TableWrapper = ({ urlState, stateUrlUpdate }) => {
         },
       };
     }
-
+    setQueryState(query);
     setTriggerListing(true);
-    getLaunches({ query, page });
   }, [router.query]);
 
   return (
