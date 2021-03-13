@@ -7,7 +7,7 @@ import { API } from "../../../network/API";
 import Table from "../../common/Table";
 import Pagination from "../../common/Pagination";
 import StatusTag from "../../common/StatusTag";
-import LaunchDetailModal from "../../common/LaunchDetailModal";
+import LaunchDetailWrapper from "../LaunchDetailWrapper";
 
 const TableWrapper = ({}) => {
   const [launchData, setLaunchData] = useState([]);
@@ -222,48 +222,14 @@ const TableWrapper = ({}) => {
           loading={triggerListing}
         />
       </Pagination>
-      <LaunchDetailModal
-        open={openLaunchModal}
-        handleClose={() => {
-          setOpenLaunchModal(false);
-          setLaunchDetailData({});
+      <LaunchDetailWrapper
+        {...{
+          openLaunchModal,
+          setOpenLaunchModal,
+          setLaunchDetailData,
+          detailDataLoading,
+          launchDetailData,
         }}
-        isLoading={detailDataLoading}
-        imageUrl={launchDetailData?.links?.patch?.small}
-        missionName={launchDetailData?.name}
-        status={
-          launchDetailData?.upcoming
-            ? "Upcoming"
-            : launchDetailData?.success
-            ? "Success"
-            : "Failed"
-        }
-        rocketName={launchDetailData?.rocket?.name}
-        links={{
-          nasa: launchDetailData?.links?.presskit,
-          wikipedia: launchDetailData?.links?.wikipedia,
-          youtube: launchDetailData?.links?.webcast,
-        }}
-        flightNumber={launchDetailData?.flight_number}
-        details={launchDetailData?.details}
-        rocketType={launchDetailData?.rocket?.engines?.type}
-        manufacturer={launchDetailData?.rocket?.company}
-        country={launchDetailData?.rocket?.country}
-        date={
-          launchDetailData?.date_utc &&
-          format(new Date(launchDetailData?.date_utc), "dd MMM yyyy HH:mm")
-        }
-        payloadType={
-          launchDetailData?.payloads && launchDetailData?.payloads.length
-            ? launchDetailData?.payloads[0]?.type
-            : ""
-        }
-        orbit={
-          launchDetailData?.payloads && launchDetailData?.payloads.length
-            ? launchDetailData?.payloads[0]?.orbit
-            : ""
-        }
-        launchSite={launchDetailData?.launchpad?.name}
       />
     </div>
   );
