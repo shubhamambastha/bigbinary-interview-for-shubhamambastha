@@ -144,8 +144,10 @@ const TableWrapper = ({}) => {
     if (router?.query?.dateStart || router?.query?.dateEnd) {
       query = {
         ...query,
-        $gte: router?.query?.dateStart,
-        $lte: router?.query?.dateEnd,
+        date_utc: {
+          $gte: router?.query?.dateStart,
+          $lte: router?.query?.dateEnd,
+        },
       };
     }
 
