@@ -245,7 +245,7 @@ LaunchDetailModal.propTypes = {
     wikipedia: PropTypes.string,
     youtube: PropTypes.string,
   }),
-  flightNumber: PropTypes.bool,
+  flightNumber: PropTypes.number,
   details: PropTypes.string,
   rocketType: PropTypes.string,
   manufacturer: PropTypes.string,
