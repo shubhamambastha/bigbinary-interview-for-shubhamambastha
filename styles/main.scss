@@ -2,6 +2,8 @@
 @import "../node_modules/tailwindcss/components.css";
 @import "../node_modules/tailwindcss/utilities.css";
 @import "./typography";
+@import "../node_modules/react-date-range/dist/styles.css"; // main css file of range calendar
+@import "../node_modules/react-date-range/dist/theme/default.css"; // theme css file of range calendar
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -30,4 +32,30 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+/** For Range Calendar **/
+.rdrMonthAndYearWrapper {
+  height: 2.5rem;
+  padding: 0;
+}
+
+.rdrDefinedRangesWrapper {
+  width: 6.5rem;
+  .rdrStaticRange {
+    border: 0;
+    .rdrStaticRangeLabel {
+      padding: 0.5rem 0.75rem;
+      font-weight: 500;
+    }
+  }
+}
+
+.rdrInputRanges {
+  padding: 0;
+}
+
+.rdrMonth {
+  width: 16rem;
+  padding: 0 0.5rem 0;
 }
