@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
-import queryString from "query-string";
 import { useRouter } from "next/router";
 import _ from "lodash";
 import { API } from "../../../network/API";
@@ -9,12 +8,11 @@ import Pagination from "../../common/Pagination";
 import StatusTag from "../../common/StatusTag";
 import LaunchDetailWrapper from "../LaunchDetailWrapper";
 
-const TableWrapper = ({}) => {
+const TableWrapper = ({ urlState, stateUrlUpdate }) => {
   const [launchData, setLaunchData] = useState([]);
   const [launchDetailData, setLaunchDetailData] = useState({});
   const [openLaunchModal, setOpenLaunchModal] = useState(false);
   const [detailDataLoading, setDetailDataLoading] = useState(false);
-  const [urlState, setUrlState] = useState({});
   const [triggerListing, setTriggerListing] = useState(false);
   const [pageInfo, setPageInfo] = useState({
     perPageCount: 12,
@@ -99,18 +97,6 @@ const TableWrapper = ({}) => {
   };
 
   /**
-   * @description This function is used to update the url state
-   * @param {*} urlState
-   */
-  const stateUrlUpdate = (urlState) => {
-    setUrlState(urlState);
-    const queryParam = `?${queryString.stringify(urlState)}`;
-    router.push(`/${queryParam}`, `/${queryParam}`, {
-      shallow: true,
-    });
-  };
-
-  /**
    * This use Effect triggers when router param has changed
    */
   useEffect(() => {
@@ -163,7 +149,7 @@ const TableWrapper = ({}) => {
     );
 
   return (
-    <div className="text-2xl font-bold my-12 max-w-240 mx-auto">
+    <div className="text-2xl font-bold my-12">
       <Pagination
         loading={triggerListing}
         pagination={{
