@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import TableWrapper from "../TableWrapper";
-import { CalendarIcon, ChevronDown } from "../../../_helpers/Icons";
+import { CalendarIcon, ChevronDown, FilterIcon } from "../../../_helpers/Icons";
 import Calendar from "../../common/Calendar";
+import DropDownMenu from "../../common/DropDownMenu";
 import { defineds } from "../../common/Calendar/CustomRange";
 import { isAfter, formatISO } from "date-fns";
 import queryString from "query-string";
@@ -12,6 +13,8 @@ const Home = (props) => {
   const [urlState, setUrlState] = useState({});
   const [openCalendar, setOpenCalendar] = useState(false);
   const [filterName, setFilterName] = useState("Select Dates");
+  const [statusLabel, setStatusLabel] = useState("All Launches");
+  const [statusValue, setStatusValue] = useState("all");
   const [selectedDates, setSelectedDates] = useState({
     startDate: defineds.endOfLastSixMonth,
     endDate: defineds.startOfLastSixMonth,
@@ -19,6 +22,18 @@ const Home = (props) => {
   });
 
   const router = useRouter();
+
+  /**
+   * Use effect to set selected dates in query and in label
+   */
+  useEffect(() => {
+    const url = {
+      ...urlState,
+      page: 1,
+      status: statusValue,
+    };
+    stateUrlUpdate(url);
+  }, [statusValue]);
 
   /**
    * Use effect to set selected dates in query and in label
@@ -62,7 +77,46 @@ const Home = (props) => {
           <span className="font-medium">{filterName}</span>
           <ChevronDown />
         </div>
-        <div></div>
+        <DropDownMenu
+          icon={<FilterIcon />}
+          title={statusLabel}
+          options={[
+            {
+              value: "all",
+              label: "All Launches",
+              onClick: (e) => {
+                setStatusValue(e.value);
+                setStatusLabel(e.label);
+              },
+            },
+            {
+              value: "upcoming",
+              label: "Upcoming Launches",
+              onClick: (e) => {
+                setStatusValue(e.value);
+                setStatusLabel(e.label);
+              },
+            },
+            {
+              value: "success",
+              label: "Successful Launches",
+              onClick: (e) => {
+                setStatusValue(e.value);
+                setStatusLabel(e.label);
+              },
+            },
+            {
+              value: "failure",
+              label: "Failed Launches",
+              onClick: (e) => {
+                setStatusValue(e.value);
+                setStatusLabel(e.label);
+              },
+            },
+          ]}
+          menuClass="text-primary font-medium flex cursor-pointer"
+          className="flex items-center py-1"
+        />
       </div>
       <TableWrapper
         {...{
