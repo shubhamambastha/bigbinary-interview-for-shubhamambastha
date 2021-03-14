@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
 import { customRanges } from "../components/common/Calendar/CustomRange";
 import _ from "lodash";
 
@@ -6,14 +6,14 @@ export const getDateLabel = (dateStart, dateEnd) => {
   let label = "";
   let rangeDate = customRanges.find(
     (dateRange) =>
-      dateRange.range().startDate === dateStart &&
-      dateRange.range().endDate === dateEnd
+      formatISO(dateRange.range().startDate) === formatISO(dateStart) &&
+      formatISO(dateRange.range().endDate) === formatISO(dateEnd)
   );
   if (rangeDate?.label) {
     label = rangeDate.label;
   } else {
-    label = `${format(dateStart, "dd/MM/yyyy")}-${format(
-      dateEnd,
+    label = `${format(new Date(dateStart), "dd/MM/yyyy")}-${format(
+      new Date(dateEnd),
       "dd/MM/yyyy"
     )}`;
   }

@@ -7,9 +7,9 @@ import Table from "../../common/Table";
 import Pagination from "../../common/Pagination";
 import StatusTag from "../../common/StatusTag";
 import LaunchDetailWrapper from "../LaunchDetailWrapper";
-import { getDisplayValue } from "../../../_helpers/Functions";
+import { getDisplayValue, getDateLabel } from "../../../_helpers/Functions";
 
-const TableWrapper = ({ urlState, stateUrlUpdate }) => {
+const TableWrapper = ({ urlState, stateUrlUpdate, setFilterName }) => {
   const [launchData, setLaunchData] = useState([]);
   const [launchDetailData, setLaunchDetailData] = useState({});
   const [openLaunchModal, setOpenLaunchModal] = useState(false);
@@ -147,6 +147,12 @@ const TableWrapper = ({ urlState, stateUrlUpdate }) => {
           $lte: router?.query?.dateEnd,
         },
       };
+      setFilterName(
+        getDateLabel(
+          new Date(router?.query?.dateStart),
+          new Date(router?.query?.dateEnd)
+        )
+      );
     }
     setQueryState(query);
     setTriggerListing(true);
