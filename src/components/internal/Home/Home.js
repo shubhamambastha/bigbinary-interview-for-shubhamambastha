@@ -27,6 +27,7 @@ const Home = (props) => {
     if (isAfter(selectedDates.endDate, selectedDates.startDate)) {
       const url = {
         ...urlState,
+        page: 1,
         dateStart: formatISO(selectedDates.startDate),
         dateEnd: formatISO(selectedDates.endDate),
       };

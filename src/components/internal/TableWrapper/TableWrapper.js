@@ -105,7 +105,6 @@ const TableWrapper = ({ urlState, stateUrlUpdate, setFilterName }) => {
   useEffect(() => {
     if (triggerListing) {
       getLaunches();
-      setTriggerListing(false);
     }
   }, [triggerListing]);
 
@@ -114,6 +113,9 @@ const TableWrapper = ({ urlState, stateUrlUpdate, setFilterName }) => {
    */
   useEffect(() => {
     let query = {};
+    if (router?.query?.page) {
+      setPageInfo({ ...pageInfo, currentPage: Number(router?.query?.page) });
+    }
     if (router?.query?.status) {
       switch (router?.query?.status) {
         case "success":
