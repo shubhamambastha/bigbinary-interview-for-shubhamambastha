@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useOutsideClick } from "../../../hooks/useOutsideClick";
 import { useEscPress } from "../../../hooks/useEscPress";
 import { ChevronDown, FilterIcon } from "../../../_helpers/Icons";
 
-function DropDownMenu({ icon, title, options, menuClass, ...rest }) {
+function DropDownMenu({
+  icon,
+  options,
+  menuClass,
+  value,
+  onOptionClick,
+  ...rest
+}) {
   const [isOpen, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
   const containerRef = useOutsideClick(() => setOpen(false), isOpen);
   useEscPress(() => setOpen(false), isOpen);
 
@@ -14,6 +22,10 @@ function DropDownMenu({ icon, title, options, menuClass, ...rest }) {
       refs.forEach((ref) => (ref.current = thing));
     };
   }
+
+  useEffect(() => {
+    setTitle(options.find((el) => el.value === value).label);
+  }, [value]);
 
   return (
     <div {...rest}>
@@ -35,7 +47,7 @@ function DropDownMenu({ icon, title, options, menuClass, ...rest }) {
               <div
                 className="py-2 flex items-center px-4 text-sm text-secondary cursor-pointer hover:bg-primary"
                 key={index}
-                onClick={() => option?.onClick(option)}
+                onClick={() => onOptionClick(option)}
               >
                 {option.label}
               </div>
@@ -48,33 +60,32 @@ function DropDownMenu({ icon, title, options, menuClass, ...rest }) {
 }
 DropDownMenu.defaultProps = {
   icon: <FilterIcon />,
-  title: "Title",
+  value: "option1",
   menuClass: "text-primary font-medium flex",
+  onOptionClick: () => console.log("option1 clicked"),
   options: [
     {
       value: "option1",
       label: "option1",
-      onClick: () => console.log("option1 clicked"),
     },
     {
       value: "option2",
       label: "option2",
-      onClick: () => console.log("option2 clicked"),
     },
   ],
 };
 
 DropDownMenu.propTypes = {
-  title: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
   menuClass: PropTypes.string,
   icon: PropTypes.node,
+  onOptionClick: PropTypes.func,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
-      onClick: PropTypes.func,
     })
-  ),
+  ).isRequired,
 };
 
 export default DropDownMenu;
