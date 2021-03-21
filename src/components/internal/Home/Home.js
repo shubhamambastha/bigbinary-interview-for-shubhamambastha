@@ -37,6 +37,7 @@ const Home = (props) => {
    * Function to set selected dates in query and in label
    */
   const onDateChange = (dates) => {
+    setSelectedDates(dates);
     if (isAfter(dates.endDate, dates.startDate)) {
       const url = {
         ...urlState,
