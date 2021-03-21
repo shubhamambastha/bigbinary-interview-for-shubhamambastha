@@ -147,7 +147,7 @@ const LaunchDetailModal = ({
             <div className="flex py-4 space-x-5">
               <span className="w-1/3">Rocket Type</span>
               <span
-                className={`font-regular ${
+                className={`font-regular capitalize ${
                   isLoading ? "w-16 h-4 bg-gray-200 rounded" : ""
                 }`}
               >
