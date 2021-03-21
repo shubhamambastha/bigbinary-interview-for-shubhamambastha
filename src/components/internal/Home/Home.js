@@ -36,23 +36,20 @@ const Home = (props) => {
   }, [statusValue]);
 
   /**
-   * Use effect to set selected dates in query and in label
+   * Function to set selected dates in query and in label
    */
-  useEffect(() => {
-    if (isAfter(selectedDates.endDate, selectedDates.startDate)) {
+  const onDateChange = (dates) => {
+    if (isAfter(dates.endDate, dates.startDate)) {
       const url = {
         ...urlState,
         page: 1,
-        dateStart: formatISO(selectedDates.startDate),
-        dateEnd: formatISO(selectedDates.endDate),
+        dateStart: formatISO(dates.startDate),
+        dateEnd: formatISO(dates.endDate),
       };
       stateUrlUpdate(url);
       setOpenCalendar(false);
-      setFilterName(
-        getDateLabel(selectedDates.startDate, selectedDates.endDate)
-      );
     }
-  }, [selectedDates]);
+  };
 
   /**
    * @description This function is used to update the url state
@@ -125,7 +122,7 @@ const Home = (props) => {
           setFilterName,
         }}
       />
-      <Calendar open={openCalendar} {...{ selectedDates, setSelectedDates }} />
+      <Calendar open={openCalendar} {...{ selectedDates, onDateChange }} />
     </div>
   );
 };
