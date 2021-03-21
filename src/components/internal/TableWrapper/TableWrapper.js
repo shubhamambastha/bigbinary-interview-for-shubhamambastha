@@ -22,8 +22,6 @@ const TableWrapper = ({
   const [openLaunchModal, setOpenLaunchModal] = useState(false);
   const [detailDataLoading, setDetailDataLoading] = useState(false);
   const [triggerListing, setTriggerListing] = useState(false);
-  const [queryState, setQueryState] = useState({});
-
   const router = useRouter();
 
   const [pageInfo, setPageInfo] = useState({
@@ -37,7 +35,7 @@ const TableWrapper = ({
    */
   const getLaunches = async () => {
     const { data, error } = await API.post(`/`, {
-      query: queryState,
+      query: getQueryVariables(),
       options: {
         limit: pageInfo?.perPageCount,
         page: pageInfo?.currentPage,
@@ -107,6 +105,36 @@ const TableWrapper = ({
   };
 
   /**
+   * This function will return query variables for API
+   */
+  const getQueryVariables = () => {
+    const queryVari = {};
+    if (router.query.status) {
+      switch (router.query.status) {
+        case "success":
+          queryVari.success = true;
+          break;
+        case "failure":
+          queryVari.success = false;
+          break;
+        case "upcoming":
+          queryVari.upcoming = true;
+          break;
+
+        default:
+          break;
+      }
+    }
+    if (router.query.dateStart || router.query.dateEnd) {
+      queryVari.date_utc = {
+        $gte: router.query.dateStart,
+        $lte: router.query.dateEnd,
+      };
+    }
+    return queryVari;
+  };
+
+  /**
    * Use effect to Get launch data once it get trigger
    */
   useEffect(() => {
@@ -119,53 +147,33 @@ const TableWrapper = ({
    * This use Effect triggers when router param has changed
    */
   useEffect(() => {
-    let query = {};
-    if (router?.query?.page) {
-      setPageInfo({ ...pageInfo, currentPage: Number(router?.query?.page) });
-    }
-    if (router?.query?.status) {
-      switch (router?.query?.status) {
-        case "success":
-          query = {
-            ...query,
-            success: true,
-          };
-          break;
-        case "failure":
-          query = {
-            ...query,
-            success: false,
-          };
-          break;
-        case "upcoming":
-          query = {
-            ...query,
-            upcoming: true,
-          };
-          break;
-
-        default:
-          break;
+    if (router?.isReady) {
+      setUrlState({
+        dateStart: router?.query?.dateStart || "",
+        dateEnd: router?.query?.dateEnd || "",
+        page: router?.query?.page || 1,
+        status: router?.query?.status || "all",
+      });
+      setStatusValue(router?.query?.status || "all");
+      if (router?.query?.dateStart || router?.query?.dateEnd) {
+        setSelectedDates({
+          startDate: new Date(router?.query?.dateStart),
+          endDate: new Date(router?.query?.dateEnd),
+          key: "selection",
+        });
+        setFilterName(
+          getDateLabel(
+            new Date(router?.query?.dateStart),
+            new Date(router?.query?.dateEnd)
+          )
+        );
       }
+      if (router?.query?.page) {
+        setPageInfo({ ...pageInfo, currentPage: Number(router?.query?.page) });
+      }
+      setTriggerListing(true);
     }
-    if (router?.query?.dateStart || router?.query?.dateEnd) {
-      query = {
-        ...query,
-        date_utc: {
-          $gte: router?.query?.dateStart,
-          $lte: router?.query?.dateEnd,
-        },
-      };
-      setFilterName(
-        getDateLabel(
-          new Date(router?.query?.dateStart),
-          new Date(router?.query?.dateEnd)
-        )
-      );
-    }
-    setQueryState(query);
-    setTriggerListing(true);
-  }, [router.query]);
+  }, [router]);
 
   return (
     <div className="text-2xl font-bold my-12">
