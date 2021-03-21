@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
-import _ from "lodash";
 import { API } from "../../../network/API";
 import Table from "../../common/Table";
 import Pagination from "../../common/Pagination";
