@@ -1,10 +1,10 @@
-import Link from "next/link";
-import Test from "../src/components/Test";
+import Home from "../src/components/internal/Home";
+import Layout from "../src/components/internal/Layout";
 
 const Index = () => (
-  <div className="container bg-primary page">
-    <Test />
-  </div>
+  <Layout>
+    <Home />
+  </Layout>
 );
 
 export default Index;
