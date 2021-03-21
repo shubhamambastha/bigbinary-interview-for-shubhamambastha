@@ -9,7 +9,14 @@ import StatusTag from "../../common/StatusTag";
 import LaunchDetailWrapper from "../LaunchDetailWrapper";
 import { getDisplayValue, getDateLabel } from "../../../_helpers/Functions";
 
-const TableWrapper = ({ urlState, stateUrlUpdate, setFilterName }) => {
+const TableWrapper = ({
+  urlState,
+  setUrlState,
+  stateUrlUpdate,
+  setFilterName,
+  setSelectedDates,
+  setStatusValue,
+}) => {
   const [launchData, setLaunchData] = useState([]);
   const [launchDetailData, setLaunchDetailData] = useState({});
   const [openLaunchModal, setOpenLaunchModal] = useState(false);

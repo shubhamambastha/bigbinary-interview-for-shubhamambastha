@@ -102,7 +102,10 @@ const Home = (props) => {
         {...{
           stateUrlUpdate,
           urlState,
+          setUrlState,
           setFilterName,
+          setSelectedDates,
+          setStatusValue,
         }}
       />
       <Calendar open={openCalendar} {...{ selectedDates, onDateChange }} />
