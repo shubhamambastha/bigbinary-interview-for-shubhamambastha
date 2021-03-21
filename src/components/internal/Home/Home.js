@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import TableWrapper from "../TableWrapper";
 import { CalendarIcon, ChevronDown, FilterIcon } from "../../../_helpers/Icons";
 import Calendar from "../../common/Calendar";
@@ -13,7 +13,6 @@ const Home = (props) => {
   const [urlState, setUrlState] = useState({});
   const [openCalendar, setOpenCalendar] = useState(false);
   const [filterName, setFilterName] = useState("Select Dates");
-  const [statusLabel, setStatusLabel] = useState("All Launches");
   const [statusValue, setStatusValue] = useState("all");
   const [selectedDates, setSelectedDates] = useState({
     startDate: defineds.endOfLastSixMonth,
@@ -24,16 +23,16 @@ const Home = (props) => {
   const router = useRouter();
 
   /**
-   * Use effect to set selected dates in query and in label
+   * Function to set selected dates in query and in label
    */
-  useEffect(() => {
+  const onStatusChange = (elem) => {
     const url = {
       ...urlState,
       page: 1,
-      status: statusValue,
+      status: elem.value,
     };
     stateUrlUpdate(url);
-  }, [statusValue]);
+  };
 
   /**
    * Function to set selected dates in query and in label
@@ -75,40 +74,25 @@ const Home = (props) => {
           <ChevronDown />
         </div>
         <DropDownMenu
+          value={statusValue}
           icon={<FilterIcon />}
-          title={statusLabel}
+          onOptionClick={(e) => onStatusChange(e)}
           options={[
             {
               value: "all",
               label: "All Launches",
-              onClick: (e) => {
-                setStatusValue(e.value);
-                setStatusLabel(e.label);
-              },
             },
             {
               value: "upcoming",
               label: "Upcoming Launches",
-              onClick: (e) => {
-                setStatusValue(e.value);
-                setStatusLabel(e.label);
-              },
             },
             {
               value: "success",
               label: "Successful Launches",
-              onClick: (e) => {
-                setStatusValue(e.value);
-                setStatusLabel(e.label);
-              },
             },
             {
               value: "failure",
               label: "Failed Launches",
-              onClick: (e) => {
-                setStatusValue(e.value);
-                setStatusLabel(e.label);
-              },
             },
           ]}
           menuClass="text-primary font-medium flex cursor-pointer"
