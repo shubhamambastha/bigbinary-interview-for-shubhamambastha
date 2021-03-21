@@ -7,7 +7,6 @@ import { defineds } from "../../common/Calendar/CustomRange";
 import { isAfter, formatISO } from "date-fns";
 import queryString from "query-string";
 import { useRouter } from "next/router";
-import { getDateLabel } from "../../../_helpers/Functions";
 
 const Home = (props) => {
   const [urlState, setUrlState] = useState({});
