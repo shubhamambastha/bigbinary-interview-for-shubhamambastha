@@ -7,7 +7,7 @@ const Calendar = ({
   open,
   handleClose,
   selectedDates,
-  setSelectedDates,
+  onDateChange,
   ...rest
 }) => {
   if (!open) return null;
@@ -25,7 +25,7 @@ const Calendar = ({
         style={{ maxHeight: "calc(100% - 200px)" }}
       >
         <DateRangePicker
-          onChange={(item) => setSelectedDates(item.selection)}
+          onChange={(item) => onDateChange(item.selection)}
           showSelectionPreview={false}
           moveRangeOnFirstSelection={false}
           showMonthAndYearPickers={true}
@@ -50,7 +50,7 @@ Calendar.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func,
   selectedDates: PropTypes.object.isRequired,
-  setSelectedDates: PropTypes.func.isRequired,
+  onDateChange: PropTypes.func.isRequired,
 };
 
 export default Calendar;
