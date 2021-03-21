@@ -23,9 +23,9 @@ const Pagination = ({ children, loading, pagination, ...rest }) => {
             previousClassName={`${
               pagination.currentpage === 1 ? "hidden" : ""
             } flex justify-center items-center w-10 h-10`}
-            previousLinkClassName="focus:outline-none"
+            previousLinkClassName="focus:outline-none w-full h-full flex items-center justify-center"
             nextClassName="flex justify-center items-center w-10 h-10"
-            nextLinkClassName="focus:outline-none"
+            nextLinkClassName="focus:outline-none w-full h-full flex items-center justify-center"
             previousLabel="<"
             nextLabel=">"
             breakClassName="w-10 h-10 flex cursor-pointer"
